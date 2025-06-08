@@ -1,5 +1,5 @@
-<div class="chat-container">
-  <div class="chat-messages">
+<div class="chat-container flex flex-col h-screen">
+  <div class="chat-messages flex-1 overflow-y-auto">
     <div class="grid gap-y-2">
       <!-- Chat Messagges -->
        <app-chat-message
@@ -15,4 +15,8 @@
   </div>
 
   <!-- MessageBox -->
+  <app-text-message-box
+    placeholder="Escribe un mensaje..."
+    (onMesage)="handleMessage($event)"
+  />
 </div>
