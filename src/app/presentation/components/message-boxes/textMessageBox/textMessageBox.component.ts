@@ -29,7 +29,7 @@ export class TextMessageBoxComponent {
  handleSubmit() {
   if ( this.form.invalid) return;
    const { prompt } = this.form.value;
-    console.log(`Mensaje enviado por el componente hijo: ${prompt}`);
+    // console.log(`Mensaje enviado por el componente hijo: ${prompt}`);
 
     // Se hace el envio desde la caja de información al componente padre
     this.onMesage.emit(prompt ?? '');

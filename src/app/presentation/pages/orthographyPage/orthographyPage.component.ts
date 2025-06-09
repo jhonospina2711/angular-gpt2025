@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { ChatMessageComponent, MyMessageComponent, TextMessageBoxComponent, TextMessageBoxEvent, TextMessageBoxFileComponent, TextMessageBoxSelectComponent, TextMessageEvent, TypingLoaderComponent } from '@components/index';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChatMessageComponent, GptMessageOrthographyComponent, MyMessageComponent, TextMessageBoxComponent, TextMessageBoxEvent, TextMessageBoxFileComponent, TextMessageBoxSelectComponent, TextMessageEvent, TypingLoaderComponent } from '@components/index';
 import { Message } from '@interfaces/index';
+import { OpenAiService } from '../../services/openai.service';
 
 
 @Component({
@@ -10,30 +11,48 @@ import { Message } from '@interfaces/index';
   imports: [
     CommonModule,
     ChatMessageComponent,
+    GptMessageOrthographyComponent,
     MyMessageComponent,
     TypingLoaderComponent,
-    // TextMessageBoxComponent,
-    // TextMessageBoxFileComponent,
-    TextMessageBoxSelectComponent
+    TextMessageBoxComponent,
+
   ],
   templateUrl: './orthographyPage.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class OrthographyPageComponent {
 
-  public messages = signal<Message[]>([{ text: 'Hola Mundo', isGpt: false }]);
+  public messages = signal<Message[]>([]);
   public isLoading = signal(false);
+  public OpenAiService = inject( OpenAiService);
 
-  handleMessage( promp: string ) {
-    console.log( `Mensaje recibido por el componente padre Orthography: ${promp}` );
+  handleMessage( prompt: string ) {
+
+    this.isLoading.set(true);
+
+    this.messages.update( (prev) => [
+      ...prev,
+      {
+        isGpt: false,
+        text: prompt
+      }
+    ]);
+    //console.log( `Mensaje recibido por el componente padre Orthography: ${prompt}` );
+
+    this.OpenAiService.checkOrthography( prompt )
+      .subscribe( resp => {
+        this.isLoading.set(false);
+
+        this.messages.update( prev => [
+          ...prev,
+          {
+            isGpt: true,
+            text: resp.message,
+            info: resp,
+          }
+        ])
+      });
+
   }
 
-  handleMessageWithFile( {prompt, file }: TextMessageEvent ) {
-    console.log( {prompt, file} );
-
-  }
-
-  handleMessageWithFileSelect( event: TextMessageBoxEvent) {
-    console.log(event);
-  }
  }
