@@ -3,21 +3,40 @@
 (ngSubmit)="handleSubmit()"
  class="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4"
 >
+
+
+<div class="mr-3">
+  <!-- Este código muesta el boton para adjuntar archivos -->
+  <button
+      (click)="fileInput.click()"
+      class="flex items-center justify-center text-gray-400">
+      <i class="fa-solid fa-paperclip text-xl"></i>
+    </button>
+</div>
+<!-- Acciona la ventana emergente para seleccionar el archivo -->
+<input
+  type="file"
+  #fileInput
+  hidden
+  (change)="handleSelectedFile($event)"
+  >
+
 <div class="flex-grow">
   <div class="relative w-full">
+
+
+    <!-- Este código corresponde a la caja de texto donde se va a interactur con la IA -->
     <input
               type="text"
               autofocus
               class="flex w-full border rounded-xl text-gray-800 focus:outline-none focus:border-indigo-300 pl-4 h-10"
               formControlName="prompt"
-              [placeholder]="placeholder"
-              [autocomplete]="disableCorrections ? 'on' : 'off'"
-              [spellcheck]=" disableCorrections ? 'on': 'off'"
               />
   </div>
 </div>
 
 <div class="ml-4">
+  <!-- Este código corresponde al botón de enviar mensaje, el cual se encuentra deshabilitado si no hay información en la caja de texto -->
   <button
       class="btn-primary"
       type="submit"

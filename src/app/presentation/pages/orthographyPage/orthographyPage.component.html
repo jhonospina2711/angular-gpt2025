@@ -6,17 +6,42 @@
         message="Escribe el texto que quieres que revise."
        />
 
-       <app-my-message
-        message="Hola Mundo"
-       />
+       @for (message of messages(); track $index) {
+        @if ( message.isGpt) {
+          <app-chat-message
+          [message]="message.text"
+          />
+        } @else {
+          <app-my-message
+           [message]="message.text"
+          />
+        }
+       }
 
-       <app-typing-loader/>
+
+       <!-- Se muestra el typing, los tres puntos que se muestan cuando se esta haciendo una solicitud al modelo de IA -->
+       @if (isLoading()) {
+         <app-typing-loader/>
+       }
     </div>
   </div>
 
-  <!-- MessageBox -->
-  <app-text-message-box
+  <!-- Renderiza el componente hijo TextMessageBoxComponent, el cual permite que el usuario ingrese el promp que desea traducir -->
+  <!-- <app-text-message-box
     placeholder="Escribe un mensaje..."
     (onMesage)="handleMessage($event)"
+  /> -->
+
+  <!-- Renderiza el componente hijo TextMessageBoxFileComponent, el cual permite al usuario enviar un promp con un archivo adjunto  -->
+  <!-- <app-text-message-box-file
+    placeholder="Escribe un mensaje..."
+    (onMesage)="handleMessageWithFile($event)"
+  /> -->
+
+  <!--Renderiza el componente hijo TextMessageBoxSelectComponent, el cual permite al usuario seleccionar   -->
+  <app-text-message-box-select
+    placeholder="Escribe un mensaje..."
+    [options] = "[{ id: '1', text: 'Uno'}, { id: '2', text: 'Dos'}]"
+    (onMesage)="handleMessageWithFileSelect($event)"
   />
 </div>
