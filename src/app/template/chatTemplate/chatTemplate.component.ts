@@ -27,8 +27,8 @@ export class ChatTemplateComponent {
   public isLoading = signal(false);
   public OpenAiService = inject( OpenAiService);
 
-  handleMessage( promp: string ) {
-    console.log( `Mensaje recibido por el componente padre Orthography: ${promp}` );
+  handleMessage( prompt: string ) {
+    console.log( `Mensaje recibido por el componente padre Orthography: ${prompt}` );
   }
 
   // handleMessageWithFile( {prompt, file }: TextMessageEvent ) {
