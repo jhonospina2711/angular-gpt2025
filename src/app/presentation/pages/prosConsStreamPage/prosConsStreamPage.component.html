@@ -6,7 +6,7 @@
         message="¿Que deseas comprar? - Stream"
        />
 
-       @for (message of messages(); track $index) {
+       @for (message of messages(); track message.text) {
         @if ( message.isGpt) {
           <app-chat-message
           [message]="message.text"

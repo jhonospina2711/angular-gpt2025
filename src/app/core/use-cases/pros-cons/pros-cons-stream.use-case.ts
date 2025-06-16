@@ -1,7 +1,7 @@
 import { environment } from "environments/environment";
 
 
-export const prosConsStreamUseCase = async ( prompt: string) => {
+export async function* prosConsStreamUseCase( prompt: string, abortSignal: AbortSignal) {
   try {
 
      const resp = await fetch(`${ environment.backendApi}/pros-cons-discusser-stream`, {
@@ -9,8 +9,8 @@ export const prosConsStreamUseCase = async ( prompt: string) => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ prompt })
-
+          body: JSON.stringify({ prompt }),
+          signal: abortSignal,
         });
 
          if ( !resp.ok ) throw new Error('No se puedo realiar la comparación');
@@ -38,10 +38,10 @@ export const prosConsStreamUseCase = async ( prompt: string) => {
           const decodeChunk = decoder.decode( value, {stream: true })
           //Agrega el texto decodificado a la variable text
           text += decodeChunk;
-          console.log(text);
+          yield text;
         }
 
-        return null;
+        return text;
 
 
   } catch (error) {
