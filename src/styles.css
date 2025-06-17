@@ -43,9 +43,9 @@ em {
   @apply flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-white bg-opacity-5 h-[calc(100vh-90px)] p-4 w-[calc(100vw-500px)];
 }
 
-/* .chat-messages {
+.chat-messages {
   @apply flex flex-col h-full overflow-x-auto mb-4 overflow-scroll;
-} */
+}
 
 
 /* Animations */

@@ -9,7 +9,7 @@ interface Option {
 
 export interface TextMessageBoxEvent {
   prompt: string;
-  selectedOption: String;
+  selectedOption: string;
 }
 
 @Component({

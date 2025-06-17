@@ -1,1 +1,36 @@
-<p>translatePage works!</p>
+<div class="chat-container flex flex-col h-screen">
+  <div class="chat-messages flex-1 overflow-y-auto">
+    <div class="grid gap-y-2">
+      <!-- Chat Messagges -->
+       <app-chat-message
+        message="Escribe el texto que quieres que revise."
+       />
+
+       @for (message of messages(); track $index) {
+        @if ( message.isGpt) {
+          <app-chat-message
+          [message]="message.text"
+          />
+        } @else {
+          <app-my-message
+           [message]="message.text"
+          />
+        }
+       }
+
+
+       <!-- Se muestra el typing, los tres puntos que se muestan cuando se esta haciendo una solicitud al modelo de IA -->
+       @if (isLoading()) {
+         <app-typing-loader/>
+       }
+    </div>
+  </div>
+
+  <!-- Renderiza el componente hijo TextMessageBoxComponent, el cual permite que el usuario ingrese el promp que desea traducir -->
+  <app-text-message-box-select
+  [options]="languages()"
+    placeholder="Escribe un mensaje..."
+    (onMesage)="handleMessageWithFileSelect($event)"
+  />
+</div>
+
